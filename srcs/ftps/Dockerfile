@@ -1,0 +1,18 @@
+FROM alpine:latest
+
+MAINTAINER novan-ve <novan-ve@student.codam.nl>
+
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
+    apk update && \
+    apk add openssl pure-ftpd && \
+    mkdir -p /ftp/ftp-admin && \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=NL/L=Amsterdam/O=Codam/CN=novan-ve" -keyout /etc/ssl/private/pure-ftpd.pem -out /etc/ssl/private/pure-ftpd.pem && \
+    chmod 600 /etc/ssl/private/*.pem && \
+    adduser -h /ftp/ftp-admin -D ftp-admin && \
+    echo "ftp-admin:ftpwachtwoord" | chpasswd && \
+    touch /ftp/ftp-admin/test.txt && \
+    chown -R ftp-admin:ftp-admin /ftp/ftp-admin
+
+EXPOSE 21 21000
+
+CMD /usr/sbin/pure-ftpd -j -Y 2 -p 21000:21000 -P "172.17.0.2"

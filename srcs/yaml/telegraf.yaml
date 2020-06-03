@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegraf
+  labels:
+    app: telegraf
+spec:
+  type: NodePort
+  ports:
+    - port: 8087
+      nodePort: 8087
+      protocol: TCP
+      name: http
+  selector:
+    app: telegraf
+    tier: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf
+  labels:
+    app: telegraf
+spec:
+  selector:
+    matchLabels:
+      app: telegraf
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: telegraf
+        tier: frontend
+    spec:
+      containers:
+      - image: telegrafimg:1.0
+        name: telegraf
+        ports:
+        - containerPort: 8087
+          name: telegraf
+        volumeMounts:
+        - name: dockersocket
+          mountPath: "/var/run/docker.sock"
+      volumes:
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock

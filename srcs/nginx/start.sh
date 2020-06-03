@@ -1,10 +1,14 @@
-#!/bin/sh
+# **************************************************************************** #
+#                                                                              #
+#                                                         ::::::::             #
+#    start.sh                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
+#                                                    +#+                       #
+#    Created: 2020/04/25 12:25:49 by novan-ve      #+#    #+#                  #
+#    Updated: 2020/04/25 12:35:55 by novan-ve      ########   odam.nl          #
+#                                                                              #
+# **************************************************************************** #
 
-[ -z "$SSH_USER" ] && SSH_USER=admin
-[ -z "$SSH_PASSWORD"] && SSH_PASSWORD=admin
-adduser -D "$SSH_USER"
-echo "$SSH_USER:$SSH_PASSWORD" | chpasswd
-echo "user:password = $SSH_USER:$SSH_PASSWORD"
-ssh-keygen -A
 /usr/sbin/sshd
 nginx -g "daemon off;"
