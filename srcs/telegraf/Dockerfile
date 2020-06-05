@@ -1,6 +1,4 @@
-FROM alpine:latest
-
-MAINTAINER novan-ve <novan-ve@student.codam.nl>
+FROM alpine
 
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
 	apk update && \

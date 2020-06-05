@@ -6,11 +6,11 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/04/25 12:26:05 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/04/25 12:36:25 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/05 09:18:10 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-FROM alpine:latest
+FROM alpine
 
 COPY start.sh /start.sh
 

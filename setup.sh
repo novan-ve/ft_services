@@ -6,7 +6,7 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/05 15:04:46 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/06/04 15:45:42 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/05 09:21:06 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,10 +68,10 @@ printf "Deploying ftps\t\t\t"
 kubectl apply -f srcs/yaml/ftps.yaml &> /dev/null & spinner
 
 printf "Building InfluxDB image\t\t"
-docker build -t influxdbimg:1.0 srcs/influxdb &> /dev/null & spinner
+docker build -t influxdbimg:1.0 srcs/influxDB &> /dev/null & spinner
 
 printf "Deploying InfluxDB\t\t"
-kubectl apply -f srcs/yaml/influxdb.yaml &> /dev/null & spinner
+kubectl apply -f srcs/yaml/influxDB.yaml &> /dev/null & spinner
 
 printf "Building phpMyAdmin image\t"
 docker build -t phpmyadminimg:1.0 srcs/phpmyadmin &> /dev/null & spinner

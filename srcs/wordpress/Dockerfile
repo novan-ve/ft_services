@@ -1,6 +1,4 @@
-FROM alpine:latest
-
-MAINTAINER novan-ve <novan-ve@student.codam.nl>
+FROM alpine
 
 COPY ./start.sh /
 COPY ./wp-cli.phar /tmp
