@@ -33,10 +33,10 @@ spec:
     spec:
       containers:
       - image: influxdbimg:1.0
-        name: influxDB
+        name: influxdb
         ports:
         - containerPort: 8086
-          name: influxDB
+          name: influxdb
         volumeMounts:
           - name: influxdb-persistent-storage
             mountPath: /var/lib/influxDB
