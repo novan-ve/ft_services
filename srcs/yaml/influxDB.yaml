@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: influxDB
+  name: influxdb
   labels:
     app: influxDB
 spec:
@@ -17,7 +17,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: influxDB
+  name: influxdb
   labels:
     app: influxDB
 spec:
@@ -38,17 +38,17 @@ spec:
         - containerPort: 8086
           name: influxDB
         volumeMounts:
-          - name: influxDB-persistent-storage
+          - name: influxdb-persistent-storage
             mountPath: /var/lib/influxDB
       volumes:
-      - name: influxDB-persistent-storage
+      - name: influxdb-persistent-storage
         persistentVolumeClaim:
-          claimName: influxDB-pv-claim
+          claimName: influxdb-pv-claim
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: influxDB-pv-volume
+  name: influxdb-pv-volume
   labels:
     type: local
 spec:
@@ -63,7 +63,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: influxDB-pv-claim
+  name: influxdb-pv-claim
 spec:
   storageClassName: manual
   accessModes:
