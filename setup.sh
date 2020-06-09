@@ -6,7 +6,7 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/05 15:04:46 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/06/05 09:21:06 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/08 13:49:29 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,18 @@ fi
 }
 
 printf  "Starting Minikube\t\t"
-minikube start --vm-driver=virtualbox &> /dev/null & spinner
+minikube delete &> /dev/null && minikube start --vm-driver=virtualbox &> /dev/null & spinner
 
 printf "Setting Port range\t\t"
 minikube ssh "sudo sed '39i\    - --service-node-port-range=0-33000' /etc/kubernetes/manifests/kube-apiserver.yaml > /tmp/tmp && sudo rm /etc/kubernetes/manifests/kube-apiserver.yaml && sudo mv /tmp/tmp /etc/kubernetes/manifests/kube-apiserver.yaml && sudo mkdir /mnt/data" & spinner
 
 printf "Enabling ingress\t\t"
 minikube addons enable ingress &> /dev/null & spinner
+
+printf "Enabling dashboard\t\t"
+minikube addons enable dashboard &> /dev/null & spinner
+
+pkill -9 -f "kubectl proxy" && sleep 1 > /dev/null 2>&1
 
 server_ip=$(minikube ip)
 printf "Setting IPs\t\t\t"
@@ -96,5 +101,10 @@ docker build -t grafanaimg:1.0 srcs/grafana &> /dev/null & spinner
 
 printf "Deploying Grafana\t\t"
 kubectl apply -f srcs/yaml/grafana.yaml &> /dev/null & spinner
+
+printf "Deploying dashboard"
+kubectl apply -f srcs/yaml/dashboard.yaml > /dev/null 2>&1
+((kubectl proxy &) && sleep 1) > /dev/null 2>&1
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token:
 
 printf "\n$(tput setaf 2)Finished!$(tput sgr0)\n"

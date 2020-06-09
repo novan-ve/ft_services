@@ -350,7 +350,7 @@ CREATE TABLE `data_source` (
 --
 
 INSERT INTO `data_source` (`id`, `org_id`, `version`, `type`, `name`, `access`, `url`, `password`, `user`, `database`, `basic_auth`, `basic_auth_user`, `basic_auth_password`, `is_default`, `json_data`, `created`, `updated`, `with_credentials`, `secure_json_data`, `read_only`) VALUES
-(1, 1, 5, 'influxdb', 'Influxdb', 'proxy', 'http://192.168.99.145:8086', '', 'telegraf-admin', 'telegraf', 0, '', '', 1, '{\"timeInterval\":\"10s\"}', '2020-05-02 12:17:15', '2020-05-02 12:18:24', 0, '{\"password\":\"VXN2NWFOWnifqIsNf/k5qxbGscS5qa2OK2Fl0T5O/GHtKnbWh3fMmS/7\"}', 0);
+(1, 1, 5, 'influxdb', 'InfluxDB', 'proxy', 'http://192.168.99.156:8086', '', 'telegraf-admin', 'telegraf', 0, '', '', 1, '{\"timeInterval\":\"10s\"}', '2020-05-02 12:17:15', '2020-05-02 12:18:24', 0, '{\"password\":\"VXN2NWFOWnifqIsNf/k5qxbGscS5qa2OK2Fl0T5O/GHtKnbWh3fMmS/7\"}', 0);
 
 -- --------------------------------------------------------
 

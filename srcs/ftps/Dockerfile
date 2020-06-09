@@ -1,6 +1,4 @@
-FROM alpine:latest
-
-MAINTAINER novan-ve <novan-ve@student.codam.nl>
+FROM alpine
 
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
     apk update && \
@@ -15,4 +13,4 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/reposit
 
 EXPOSE 21 21000
 
-CMD /usr/sbin/pure-ftpd -j -Y 2 -p 21000:21000 -P "192.168.99.145"
+CMD /usr/sbin/pure-ftpd -j -Y 2 -p 21000:21000 -P "192.168.99.156"
