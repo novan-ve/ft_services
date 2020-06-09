@@ -6,7 +6,7 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/05 15:04:46 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/06/08 13:49:29 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/09 12:58:46 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,41 @@ else
     printf "$(tput setaf 2)\b\b\b\b\b\b[ OK ]$(tput sgr0)\n"
 fi
 }
+
+which -s brew
+if [[ $? != 0 ]] ; then
+    printf "Intalling brew...\n"
+    rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && export PATH=$HOME/.brew/bin:$PATH && brew update && echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &> /dev/null
+else
+	printf "Updating brew...\n"
+    brew update &> /dev/null
+fi
+
+printf "Linking docker to goinfre"
+rm -rf ~/Library/Containers/com.docker.docker &> /dev/null
+mkdir -p /goinfre/$USER/docker &> /dev/null
+ln -s /goinfre/$USER/docker ~/Library/Containers/com.docker.docker &> /dev/null
+
+printf "Starting up docker...\n"
+until docker &> /dev/null
+do
+	&> /dev/null
+done
+
+printf "Linking minikube and docker to goinfre"
+export MINIKUBE_HOME=/goinfre/$USER/
+rm -rf /goinfre/$USER/.minikube &> /dev/null
+mkdir -p /goinfre/$USER/.minikube &> /dev/null
+ln -s /goinfre/$USER/.minikube ~/.minikube &> /dev/null
+
+if minikube &> /dev/null
+then
+	printf "Checking minikube for update...\n"
+	brew upgrade minikube &> /dev/null
+else
+	printf "Installing minikube\n"
+	brew install minikube &> /dev/null
+fi
 
 printf  "Starting Minikube\t\t"
 minikube delete &> /dev/null && minikube start --vm-driver=virtualbox &> /dev/null & spinner

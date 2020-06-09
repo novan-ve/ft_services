@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: influxdb
   labels:
-    app: influxDB
+    app: influxdb
 spec:
   type: NodePort
   ports:
@@ -12,24 +12,24 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: influxDB
+    app: influxdb
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: influxDB
+  name: influxdb
   labels:
-    app: influxDB
+    app: influxdb
 spec:
   selector:
     matchLabels:
-      app: influxDB
+      app: influxdb
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: influxDB
+        app: influxdb
     spec:
       containers:
       - image: influxdbimg:1.0
@@ -39,7 +39,7 @@ spec:
           name: influxdb
         volumeMounts:
           - name: influxdb-persistent-storage
-            mountPath: /var/lib/influxDB
+            mountPath: /var/lib/influxdb
       volumes:
       - name: influxdb-persistent-storage
         persistentVolumeClaim:
