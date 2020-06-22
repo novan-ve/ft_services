@@ -6,7 +6,7 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/05 15:04:46 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/06/22 12:47:28 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/22 14:01:52 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,17 +24,17 @@ which -s brew
 if [[ $? != 0 ]] ; then
     printf "Intalling brew...\n"
     rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && export PATH=$HOME/.brew/bin:$PATH && brew update && echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &> /dev/null
-	echo "Brew installed, please restart your terminal and run setup.sh again"
+	echo "Brew installed, please restart your terminal and run setup.sh again\n"
 	exit
 else
 	printf "Updating brew...\n"
     brew update &> /dev/null
 fi
 
-printf "Linking docker to goinfre"
+printf "Linking docker to goinfre\n"
 rm -rf ~/Library/Containers/com.docker.docker &> /dev/null
-mkdir -p /goinfre/$USER/docker &> /dev/null
-ln -s /goinfre/$USER/docker ~/Library/Containers/com.docker.docker &> /dev/null
+mkdir -p ~/goinfre/docker &> /dev/null
+ln -s ~/goinfre/docker ~/Library/Containers/com.docker.docker &> /dev/null
 
 printf "Starting up docker...\n"
 until docker &> /dev/null
@@ -42,11 +42,11 @@ do
 	&> /dev/null
 done
 
-printf "Linking minikube and docker to goinfre"
-export MINIKUBE_HOME=/goinfre/$USER/
-rm -rf /goinfre/$USER/.minikube &> /dev/null
-mkdir -p /goinfre/$USER/.minikube &> /dev/null
-ln -s /goinfre/$USER/.minikube ~/.minikube &> /dev/null
+printf "Linking minikube and docker to goinfre\n"
+export MINIKUBE_HOME=~/goinfre/
+rm -rf ~/goinfre/.minikube &> /dev/null
+mkdir -p ~/goinfre/.minikube &> /dev/null
+ln -s ~/goinfre/.minikube ~/.minikube &> /dev/null
 
 if minikube &> /dev/null
 then
@@ -103,12 +103,6 @@ docker build -t mysqlimg:1.0 srcs/mysql &> /dev/null & spinner
 printf "Deploying MySQL\t\t\t"
 kubectl apply -f srcs/yaml/mysql.yaml &> /dev/null & spinner
 
-printf "Building ftps image\t\t"
-docker build -t ftpsimg:1.0 srcs/ftps &> /dev/null & spinner
-
-printf "Deploying ftps\t\t\t"
-kubectl apply -f srcs/yaml/ftps.yaml &> /dev/null & spinner
-
 printf "Building InfluxDB image\t\t"
 docker build -t influxdbimg:1.0 srcs/influxDB &> /dev/null & spinner
 
@@ -138,6 +132,12 @@ docker build -t grafanaimg:1.0 srcs/grafana &> /dev/null & spinner
 
 printf "Deploying Grafana\t\t"
 kubectl apply -f srcs/yaml/grafana.yaml &> /dev/null & spinner
+
+printf "Building ftps image\t\t"
+docker build -t ftpsimg:1.0 srcs/ftps &> /dev/null & spinner
+
+printf "Deploying ftps\t\t\t"
+kubectl apply -f srcs/yaml/ftps.yaml &> /dev/null & spinner
 
 printf "Deploying dashboard"
 kubectl apply -f srcs/yaml/dashboard.yaml > /dev/null 2>&1

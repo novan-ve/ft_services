@@ -7,9 +7,7 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/reposit
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=NL/L=Amsterdam/O=Codam/CN=novan-ve" -keyout /etc/ssl/private/pure-ftpd.pem -out /etc/ssl/private/pure-ftpd.pem && \
     chmod 600 /etc/ssl/private/*.pem && \
     adduser -h /ftp/ftp-admin -D ftp-admin && \
-    echo "ftp-admin:ftpwachtwoord" | chpasswd && \
-    touch /ftp/ftp-admin/test.txt && \
-    chown -R ftp-admin:ftp-admin /ftp/ftp-admin
+    echo "ftp-admin:ftpwachtwoord" | chpasswd
 
 EXPOSE 21 21000
 
