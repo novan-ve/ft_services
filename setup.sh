@@ -6,7 +6,7 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/05 15:04:46 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/06/09 12:58:46 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/22 12:47:28 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ which -s brew
 if [[ $? != 0 ]] ; then
     printf "Intalling brew...\n"
     rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && export PATH=$HOME/.brew/bin:$PATH && brew update && echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &> /dev/null
+	echo "Brew installed, please restart your terminal and run setup.sh again"
+	exit
 else
 	printf "Updating brew...\n"
     brew update &> /dev/null
