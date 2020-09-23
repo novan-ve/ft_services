@@ -37,6 +37,8 @@ define('DB_CHARSET', 'utf8');
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
 
+set_time_limit(300);
+
 /**#@+
  * Authentication Unique Keys and Salts.
  *
@@ -46,14 +48,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'e8076c3a475280085dc0af539a9667b983dc6037');
-define('SECURE_AUTH_KEY',  '82169fcf22956be4bc2582551266adea16d50621');
-define('LOGGED_IN_KEY',    'd952149bf92ca437fe16f8e5b2c812cc5bdac7f8');
-define('NONCE_KEY',        '376ce7bea3df9314d7fe2341b79244dfbafdd429');
-define('AUTH_SALT',        '146b5e0b3090fa09bdc12518ed71f6cb7dd7158d');
-define('SECURE_AUTH_SALT', '20c6e2d4d5bc6251a8ef9858b6099c7991a7e8cb');
-define('LOGGED_IN_SALT',   '689ccf556a59d3f18174234b7e48c54a7567f6a9');
-define('NONCE_SALT',       '693d22dcc3a4f9557e207e89305ee471ada279e6');
+define( 'AUTH_KEY',         'g!uk^:c-rjXDzBNu3mE9i1jAKQerD*16kLBCtzIBZJ.>q26xudjjIC;8/.D7hKI3' );
+define( 'SECURE_AUTH_KEY',  'Fr%7$_)0/MjFR1wT9 D|P%flNerikDPym[NwNq8I/<5h4],V22M9&~Bt#_5+3SPc' );
+define( 'LOGGED_IN_KEY',    '<r}+)E8-,YjdT5Y$?hPgiB4}#BikT3iug([ap4g&1$R,&=+?U1&}HIiG}=ya)U%a' );
+define( 'NONCE_KEY',        '`T/l$NfC|>V,c+:pr1)<)#:gy,f1.ZLE1*$%KcTdZSasVy03KXah4:cVu*X(sU+a' );
+define( 'AUTH_SALT',        '+q_|/~_CJodM&v/8/vwR$lrA;$!Vc8TTLW#u?dDA#mERyj21v^ansy_kpScSTX/6' );
+define( 'SECURE_AUTH_SALT', '>Oa<O&zTx,7COQ]UO`;`g|eViF;#3Z=U3?tYg8^{;ypEnl7/T@>]plAF,.4[eF1~' );
+define( 'LOGGED_IN_SALT',   '*vuz,2It]_u%1,zFlc#rl_=}(+pY=coc,fYXaAC6<?LJZhBdWakw0-h)>/CFv6:(' );
+define( 'NONCE_SALT',       'UqrTT0}xEqV*ao!r;}3~D~+f }(EYJq-Nwq}<q|Xxpl@c!P3qf[*>uV~eStj695V' );
 
 /**#@-*/
 
@@ -79,11 +81,6 @@ $table_prefix  = 'wp_';
  */
 define('WP_DEBUG', false);
 
-// If we're behind a proxy server and using HTTPS, we need to alert Wordpress of that fact
-// see also http://codex.wordpress.org/Administration_Over_SSL#Using_a_Reverse_Proxy
-if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
-        $_SERVER['HTTPS'] = 'on';
-}
 
 /* That's all, stop editing! Happy blogging. */
 

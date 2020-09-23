@@ -6,7 +6,7 @@
 #    By: novan-ve <novan-ve@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/05 15:04:46 by novan-ve      #+#    #+#                  #
-#    Updated: 2020/06/22 14:01:52 by novan-ve      ########   odam.nl          #
+#    Updated: 2020/06/24 11:25:12 by novan-ve      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,11 @@ else
 fi
 }
 
-which -s brew
-if [[ $? != 0 ]] ; then
+if [[ ! -f ~/.brew/bin/brew ]] ; then
     printf "Intalling brew...\n"
     rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && export PATH=$HOME/.brew/bin:$PATH && brew update && echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &> /dev/null
 	echo "Brew installed, please restart your terminal and run setup.sh again\n"
+	echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc
 	exit
 else
 	printf "Updating brew...\n"
@@ -58,10 +58,7 @@ else
 fi
 
 printf  "Starting Minikube\t\t"
-minikube delete &> /dev/null && minikube start --vm-driver=virtualbox &> /dev/null & spinner
-
-printf "Setting Port range\t\t"
-minikube ssh "sudo sed '39i\    - --service-node-port-range=0-33000' /etc/kubernetes/manifests/kube-apiserver.yaml > /tmp/tmp && sudo rm /etc/kubernetes/manifests/kube-apiserver.yaml && sudo mv /tmp/tmp /etc/kubernetes/manifests/kube-apiserver.yaml && sudo mkdir /mnt/data" & spinner
+minikube delete &> /dev/null && minikube start --cpus=2 --memory 2g --disk-size 10g --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-33000 &> /dev/null & spinner
 
 printf "Enabling ingress\t\t"
 minikube addons enable ingress &> /dev/null & spinner
@@ -91,6 +88,7 @@ docker build -t nginximg:1.0 srcs/nginx &> /dev/null & spinner
 printf "Deploying nginx\t\t\t"
 kubectl apply -f srcs/yaml/nginx.yaml &> /dev/null & spinner
 
+kubectl delete validatingwebhookconfiguration ingress-nginx-admission &> /dev/null
 printf "Deploying Ingress\t\t[ .. ]"
 until kubectl apply -f srcs/yaml/ingress.yaml &> /dev/null
 do
@@ -99,7 +97,6 @@ done
 printf "$(tput setaf 2)\b\b\b\b\b\b[ OK ]$(tput sgr0)\n"
 printf "Building MySQL image\t\t"
 docker build -t mysqlimg:1.0 srcs/mysql &> /dev/null & spinner
-
 printf "Deploying MySQL\t\t\t"
 kubectl apply -f srcs/yaml/mysql.yaml &> /dev/null & spinner
 
@@ -116,14 +113,13 @@ printf "Deploying phpMyAdmin\t\t"
 kubectl apply -f srcs/yaml/phpmyadmin.yaml &> /dev/null & spinner
 
 printf "Building Wordpress image\t"
-docker build -t wordpressimg:1.0 srcs/wordpress &> /dev/null & spinner
+docker build -t wordpressimg:1.0 srcs/wordpress&> /dev/null & spinner
 
 printf "Deploying Wordpress\t\t"
 kubectl apply -f srcs/yaml/wordpress.yaml &> /dev/null & spinner
 
 printf "Building Telegraf image\t\t"
 docker build -t telegrafimg:1.0 srcs/telegraf &> /dev/null & spinner
-
 printf "Deploying Telegraf\t\t"
 kubectl apply -f srcs/yaml/telegraf.yaml &> /dev/null & spinner
 
@@ -141,7 +137,7 @@ kubectl apply -f srcs/yaml/ftps.yaml &> /dev/null & spinner
 
 printf "Deploying dashboard"
 kubectl apply -f srcs/yaml/dashboard.yaml > /dev/null 2>&1
-((kubectl proxy &) && sleep 1) > /dev/null 2>&1
+((kubectl proxy --port=8080 &) && sleep 1) > /dev/null 2>&1
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token:
 
 printf "\n$(tput setaf 2)Finished!$(tput sgr0)\n"
